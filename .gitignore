@@ -8,6 +8,7 @@ __pycache__/
 
 .vectorstore/
 vectorstore/
+vector_store/
 .faiss/
 *.pkl
 

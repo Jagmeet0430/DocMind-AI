@@ -1,19 +1,24 @@
-from pathlib import Path
-from dotenv import dotenv_values
 import os
+from pathlib import Path
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 ENV_PATH = BASE_DIR / ".env"
 
-print("ENV PATH:", ENV_PATH)
-print("Exists:", ENV_PATH.exists())
+load_dotenv(ENV_PATH, override=True)
 
-print("dotenv_values:", dotenv_values(ENV_PATH))
+try:
+    import streamlit as st
 
-from dotenv import load_dotenv
-load_dotenv(dotenv_path=ENV_PATH, override=True)
-
-print("os.getenv:", os.getenv("GOOGLE_API_KEY"))
-
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-MODEL_NAME = "gemini-2.5-flash"
+    GOOGLE_API_KEY = (
+        st.secrets.get("GOOGLE_API_KEY")
+        or os.getenv("GOOGLE_API_KEY")
+        or os.getenv("GEMINI_API_KEY")
+    )
+    MODEL_NAME = st.secrets.get(
+        "MODEL_NAME",
+        os.getenv("MODEL_NAME", "gemini-2.5-flash"),
+    )
+except Exception:
+    GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+    MODEL_NAME = os.getenv("MODEL_NAME", "gemini-2.5-flash")

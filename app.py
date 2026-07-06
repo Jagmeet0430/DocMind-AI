@@ -93,15 +93,25 @@ if question:
             with st.spinner("Generating answer..."):
                 result = generate_answer(question, chunks)
 
-            st.write(result["answer"])
+            if isinstance(result, dict):
+                answer = result["answer"]
+                sources = result.get("sources", [])
+            else:
+                answer = result
+                sources = sorted({
+                    chunk.metadata.get("source", "Unknown source")
+                    for chunk in chunks
+                })
+
+            st.write(answer)
 
             with st.expander("📚 Sources"):
-                for source in result["sources"]:
+                for source in sources:
                     st.write(f"• {source}")
 
             st.session_state.messages.append({
                 "role": "assistant",
-                "content": result["answer"]
+                "content": answer
             })
 
         except Exception as e:
