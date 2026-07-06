@@ -1,8 +1,9 @@
 import streamlit as st
+from pathlib import Path
 from dotenv import load_dotenv
 
 # LOAD ENV FIRST
-load_dotenv()
+load_dotenv(Path(__file__).resolve().parent / ".env", override=True)
 
 from rag.loader import load_multiple_pdfs
 from rag.chunker import chunk_documents

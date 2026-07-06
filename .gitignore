@@ -1,6 +1,14 @@
 .venv/
-ragenv/
+venv/
 __pycache__/
-.env
-vector_store/
 *.pyc
+
+.env
+.env.local
+
+.vectorstore/
+vectorstore/
+.faiss/
+*.pkl
+
+.streamlit/secrets.toml
